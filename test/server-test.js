@@ -1,8 +1,6 @@
 const assert = require('chai').assert
 const app = require('../server')
 const request = require('request')
-const assert = require('assert')
-const app = require('../server')
 const environment = process.env.NODE_ENV || 'test';
 const configuration = require('../knexfile')[environment];
 const database = require('knex')(configuration);

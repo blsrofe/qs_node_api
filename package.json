@@ -4,7 +4,8 @@
   "description": "quantified self node api",
   "main": "index.js",
   "scripts": {
-    "test": "mocha"
+    "test": "mocha",
+    "start": "nodemon server.js"
   },
   "author": "",
   "license": "ISC",

@@ -10,11 +10,18 @@ const MealsController = require('./lib/controllers/meals')
 
 app.set('port', process.env.PORT || 3000)
 app.use(bodyParser.json())
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "*")
+  res.header("Access-Control-Allow-Methods", "GET, PUT, POST, DELETE")
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization")
+  next()
+})
 
 app.get('/api/v1/foods', FoodsController.getAllFoods)
 app.get('/api/v1/foods/:id', FoodsController.getSingleFood)
 app.delete('/api/v1/foods/:id', FoodsController.deleteFood)
 app.post('/api/v1/foods', FoodsController.postFood)
+app.put('/api/v1/foods/:id', FoodsController.editFood)
 
 app.get('/api/v1/meals/:meal_id/foods', MealsController.getSingleMeal)
 app.get('/api/v1/meals', MealsController.getAllMeals)

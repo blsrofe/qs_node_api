@@ -15,6 +15,8 @@ app.get('/api/v1/foods', FoodsController.getAllFoods)
 app.get('/api/v1/foods/:id', FoodsController.getSingleFood)
 
 app.get('/api/v1/meals', MealsController.getAllMeals)
+app.get('/api/v1/meals/:meal_id/foods', () => {
+})
 
 if (!module.parent) {
   app.listen(app.get('port'), () => {

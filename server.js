@@ -12,6 +12,7 @@ app.use(bodyParser.json())
 
 app.get('/api/v1/foods', FoodsController.getAllFoods)
 app.get('/api/v1/foods/:id', FoodsController.getSingleFood)
+app.delete('/api/v1/foods/:id', FoodsController.deleteFood)
 
 if (!module.parent) {
   app.listen(app.get('port'), () => {

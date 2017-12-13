@@ -23,6 +23,7 @@ app.delete('/api/v1/foods/:id', FoodsController.deleteFood)
 app.post('/api/v1/foods', FoodsController.postFood)
 app.put('/api/v1/foods/:id', FoodsController.editFood)
 
+app.get('/api/v1/meals/:meal_id/foods', MealsController.getSingleMeal)
 app.get('/api/v1/meals', MealsController.getAllMeals)
 
 if (!module.parent) {

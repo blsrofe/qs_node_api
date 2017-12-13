@@ -12,6 +12,8 @@ app.set('port', process.env.PORT || 3000)
 app.use(bodyParser.json())
 
 app.get('/api/v1/foods', FoodsController.getAllFoods)
+app.get('/api/v1/foods/:id', FoodsController.getSingleFood)
+
 app.get('/api/v1/meals', MealsController.getAllMeals)
 
 if (!module.parent) {

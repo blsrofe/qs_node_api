@@ -27,29 +27,26 @@ app.put('/api/v1/foods/:id', FoodsController.editFood)
 app.get('/api/v1/meals/:meal_id/foods', MealsController.getSingleMeal)
 app.get('/api/v1/meals', MealsController.getAllMeals)
 app.post('/api/v1/meals/:meal_id/foods/:id', (request, response) => {
-  let food, meal;
   let id = request.params.id
   let meal_id = request.params.meal_id
-  Foods.fetchSingle(id)
-  .then((data) => {
-    if(!data) { return response.status(404).send({ error: "Food not found" }) }
-    food = data
-  })
-  .then(() => {
-    return database.raw(`SELECT m.id, m.name FROM meals m where m.id = ?`, [meal_id])
-  })
-  .then((data) => {
-    if(!data) { return response.status(404).send({ error: "Meal not found" }) }
-    meal = data.rows
-  })
-  .then(() => {
   return database.raw(`
     INSERT INTO food_meals (food_id, meal_id, created_at)
-    VALUES (?, ?, ?)`,
+    VALUES ((SELECT f.id FROM foods f WHERE f.id = ?), (SELECT m.id FROM meals m WHERE m.id = ?), ?) RETURNING *`,
     [id, meal_id, new Date])
-  })
-  .then(() => {
-    return response.status(201).send({ success: `${food["name"]} has been added to ${meal[0]["name"]}`})
+  .then((data) => {
+    let checkFood = data.rows[0]["food_id"]
+    let checkMeal = data.rows[0]["meal_id"]
+    let record_id = data.rows[0]["id"]
+    if (checkFood === null) {
+      return database.raw(`DELETE FROM food_meals WHERE id = ?`, [record_id])
+      .then(response.status(404).json({error: "Food not found"}))
+      //response.status(404).json({error: "Food not found"})
+    } else if (checkMeal === null) {
+      return database.raw(`DELETE FROM food_meals WHERE id = ?`, [record_id])
+      .then(response.status(404).json({error: "Meal not found"}))
+    } else {
+      return response.sendStatus(201)
+    }
   })
 })
 

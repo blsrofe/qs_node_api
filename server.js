@@ -29,6 +29,7 @@ app.put('/api/v1/foods/:id', FoodsController.editFood)
 app.get('/api/v1/meals/:meal_id/foods', MealsController.getSingleMeal)
 app.get('/api/v1/meals', MealsController.getAllMeals)
 app.post('/api/v1/meals/:meal_id/foods/:id', MealsController.postFoodMeal)
+app.delete('/api/v1/meals/:meal_id/foods/:id', MealsController.deleteFoodMeal)
 
 if (!module.parent) {
   app.listen(app.get('port'), () => {

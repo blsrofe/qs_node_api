@@ -59,4 +59,5 @@ To contribute to this app fork and download then submit a PR to this repository.
 ## Collaborators
 
 Eddie Rose - @erose357
+
 Becki Srofe - @blsrofe

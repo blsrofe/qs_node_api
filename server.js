@@ -7,6 +7,7 @@ const database = require('knex')(configuration)
 const Foods = require('./lib/models/foods')
 const FoodsController = require('./lib/controllers/foods')
 const MealsController = require('./lib/controllers/meals')
+const Meals = require('./lib/models/meals')
 
 app.set('port', process.env.PORT || 3000)
 app.use(bodyParser.json())
@@ -27,6 +28,7 @@ app.put('/api/v1/foods/:id', FoodsController.editFood)
 
 app.get('/api/v1/meals/:meal_id/foods', MealsController.getSingleMeal)
 app.get('/api/v1/meals', MealsController.getAllMeals)
+app.post('/api/v1/meals/:meal_id/foods/:id', MealsController.postFoodMeal)
 
 if (!module.parent) {
   app.listen(app.get('port'), () => {

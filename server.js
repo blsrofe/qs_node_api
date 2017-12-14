@@ -20,6 +20,10 @@ app.use((req, res, next) => {
   next()
 })
 
+app.get('/', (request, response) => {
+  response.sendFile(path.join(__dirname+'/welcome.html'))
+})
+
 app.get('/api/v1/foods', FoodsController.getAllFoods)
 app.get('/api/v1/foods/:id', FoodsController.getSingleFood)
 app.delete('/api/v1/foods/:id', FoodsController.deleteFood)

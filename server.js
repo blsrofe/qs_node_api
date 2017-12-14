@@ -26,29 +26,7 @@ app.put('/api/v1/foods/:id', FoodsController.editFood)
 
 app.get('/api/v1/meals/:meal_id/foods', MealsController.getSingleMeal)
 app.get('/api/v1/meals', MealsController.getAllMeals)
-app.post('/api/v1/meals/:meal_id/foods/:id', (request, response) => {
-  let id = request.params.id
-  let meal_id = request.params.meal_id
-  return database.raw(`
-    INSERT INTO food_meals (food_id, meal_id, created_at)
-    VALUES ((SELECT f.id FROM foods f WHERE f.id = ?), (SELECT m.id FROM meals m WHERE m.id = ?), ?) RETURNING *`,
-    [id, meal_id, new Date])
-  .then((data) => {
-    let checkFood = data.rows[0]["food_id"]
-    let checkMeal = data.rows[0]["meal_id"]
-    let record_id = data.rows[0]["id"]
-    if (checkFood === null) {
-      return database.raw(`DELETE FROM food_meals WHERE id = ?`, [record_id])
-      .then(response.status(404).json({error: "Food not found"}))
-      //response.status(404).json({error: "Food not found"})
-    } else if (checkMeal === null) {
-      return database.raw(`DELETE FROM food_meals WHERE id = ?`, [record_id])
-      .then(response.status(404).json({error: "Meal not found"}))
-    } else {
-      return response.sendStatus(201)
-    }
-  })
-})
+app.post('/api/v1/meals/:meal_id/foods/:id', MealsController.postFoodMeal)
 
 if (!module.parent) {
   app.listen(app.get('port'), () => {

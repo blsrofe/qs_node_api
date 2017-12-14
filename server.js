@@ -21,7 +21,7 @@ app.use((req, res, next) => {
 })
 
 app.get('/', (request, response) => {
-  response.sendFile(path.join(__dirname+'/welcome.html'))
+  response.send('API for Quantified Self')
 })
 
 app.get('/api/v1/foods', FoodsController.getAllFoods)

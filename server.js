@@ -25,6 +25,19 @@ app.put('/api/v1/foods/:id', FoodsController.editFood)
 
 app.get('/api/v1/meals/:meal_id/foods', MealsController.getSingleMeal)
 app.get('/api/v1/meals', MealsController.getAllMeals)
+app.post('/api/v1/meals/:meal_id/foods/:id', (request, response) => {
+  let id = request.params.id
+  let meal_id = request.params.meal_id
+  database.raw(`
+    INSERT INTO food_meals (food_id, meal_id, created_at)
+    VALUES (?, ?, ?)
+    RETURNING food_id, meal_id`,
+    [id, meal_id, new Date]
+  )
+  .then((data) => {
+    return data.rows
+  })
+})
 
 if (!module.parent) {
   app.listen(app.get('port'), () => {

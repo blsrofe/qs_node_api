@@ -29,28 +29,7 @@ app.put('/api/v1/foods/:id', FoodsController.editFood)
 app.get('/api/v1/meals/:meal_id/foods', MealsController.getSingleMeal)
 app.get('/api/v1/meals', MealsController.getAllMeals)
 app.post('/api/v1/meals/:meal_id/foods/:id', MealsController.postFoodMeal)
-app.delete('/api/v1/meals/:meal_id/foods/:id', (request, response) => {
-  let id = request.params.id
-  let meal_id = request.params.meal_id
-
-  database.raw(`
-    SELECT * FROM food_meals
-    WHERE food_id = ?
-    AND meal_id = ?
-    LIMIT 1
-  `, [id, meal_id])
-  .then((data) => {
-    if (data.rows.length === 0) {
-      response.status(404).send({ error: "Record not found" })
-    } else {
-      let fm_id = data.rows[0]["id"]
-      return database.raw(`DELETE 
-                    FROM food_meals
-                    WHERE id = ?`, [fm_id])
-      .then(response.status(200).json(data.rows[0]))
-    }
-  })
-})
+app.delete('/api/v1/meals/:meal_id/foods/:id', MealsController.deleteFoodMeal)
 
 if (!module.parent) {
   app.listen(app.get('port'), () => {
